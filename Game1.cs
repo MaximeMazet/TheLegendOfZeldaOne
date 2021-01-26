@@ -13,12 +13,15 @@ namespace ZeldaOne
 
         private Link _link;
 
+        private ResourceManager _resourceManager;
+
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = false;
             _link = new Link();
+            _resourceManager = new ResourceManager();
         }
 
         protected override void Initialize()
@@ -26,7 +29,7 @@ namespace ZeldaOne
             _graphics.PreferredBackBufferWidth = 512;
             _graphics.PreferredBackBufferHeight = 478;
             _graphics.ApplyChanges();
-            
+
             _link.Initialize();
 
             base.Initialize();
@@ -35,7 +38,9 @@ namespace ZeldaOne
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
-            
+         
+            _resourceManager.LoadAllTextures(Content);
+
             _link.LoadContent(Content);
 
             // TODO: use this.Content to load your game content here
