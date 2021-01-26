@@ -1,3 +1,5 @@
+using System;
+using System.Threading;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -8,10 +10,14 @@ namespace ZeldaOne.Entities.Friendlies
 {
     public class Link : Entity
     {
+
+        private bool _isSword;
         public Link()
-        : base("player/player_movement", new Vector2(100,100), 3, 2)
+        : base("graphics/player/player_movement", new Vector2(100,100), 3, 2)
         {
-            
+            _isSword = true;
+            _canWalk = true;
+            _animationSpeed = 200;
         }
 
 
@@ -30,27 +36,41 @@ namespace ZeldaOne.Entities.Friendlies
             float delta = (float)gameTime.ElapsedGameTime.TotalSeconds;
             if (GamePadManager.ButtonPressedContinue(Buttons.DPadUp))
             {
-                _position.Y -= _speed * delta;
+                Movement(0,-(_speed * delta));
                 _currentFrameY = 2;
                 _spriteEffect = SpriteEffects.None;
+                Animate("x", gameTime);
             }
             else if (GamePadManager.ButtonPressedContinue(Buttons.DPadDown))
             {
-                _position.Y += _speed * delta;
+                Movement(0,_speed * delta);
                 _currentFrameY = 0;
                 _spriteEffect = SpriteEffects.None;
+                Animate("x", gameTime);
             }
             else if (GamePadManager.ButtonPressedContinue(Buttons.DPadRight))
             {
-                _position.X += _speed * delta;
+                Movement(_speed * delta,0);
                 _currentFrameY = 1;
                 _spriteEffect = SpriteEffects.None;
+                Animate("x", gameTime);
             }
             else if (GamePadManager.ButtonPressedContinue(Buttons.DPadLeft))
             {
-                _position.X -= _speed * delta;
+                Movement(-(_speed * delta),0);
                 _currentFrameY = 1;
                 _spriteEffect = SpriteEffects.FlipHorizontally;
+                Animate("x", gameTime);
+            }
+            else
+            {
+                Movement(0,0);
+                ResetAnimation("x");
+            }
+            
+            if (GamePadManager.ButtonPressedOnce(Buttons.B) && _isSword)
+            {
+                Console.WriteLine("Attack");
             }
             
             
