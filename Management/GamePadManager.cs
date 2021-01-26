@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace ZeldaOne.Management
 {
-    public class GamePadManager
+    public static class GamePadManager
     {
         public static GamePadState GamePadState;
         public static GamePadState OldGamePadState;
