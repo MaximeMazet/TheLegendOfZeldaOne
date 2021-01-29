@@ -12,12 +12,15 @@ namespace ZeldaOne.Entities.Friendlies
     {
 
         private bool _isSword;
+
         public Link()
-        : base("graphics/player/player_movement", new Vector2(100,100), 3, 2)
+            : base("player_movement", new Vector2(100, 100), 3, 2, new Vector2(16, 16))
         {
             _isSword = true;
             _canWalk = true;
-            _animationSpeed = 200;
+            _animationWalkSpeed = 200;
+            _animationAttackSpeed = 100;
+            _attack = false;
         }
 
 
@@ -34,43 +37,51 @@ namespace ZeldaOne.Entities.Friendlies
         public override void Update(GameTime gameTime)
         {
             float delta = (float)gameTime.ElapsedGameTime.TotalSeconds;
-            if (GamePadManager.ButtonPressedContinue(Buttons.DPadUp))
+            if (_canWalk)
             {
-                Movement(0,-(_speed * delta));
-                _currentFrameY = 2;
-                _spriteEffect = SpriteEffects.None;
-                Animate("x", gameTime);
-            }
-            else if (GamePadManager.ButtonPressedContinue(Buttons.DPadDown))
-            {
-                Movement(0,_speed * delta);
-                _currentFrameY = 0;
-                _spriteEffect = SpriteEffects.None;
-                Animate("x", gameTime);
-            }
-            else if (GamePadManager.ButtonPressedContinue(Buttons.DPadRight))
-            {
-                Movement(_speed * delta,0);
-                _currentFrameY = 1;
-                _spriteEffect = SpriteEffects.None;
-                Animate("x", gameTime);
-            }
-            else if (GamePadManager.ButtonPressedContinue(Buttons.DPadLeft))
-            {
-                Movement(-(_speed * delta),0);
-                _currentFrameY = 1;
-                _spriteEffect = SpriteEffects.FlipHorizontally;
-                Animate("x", gameTime);
+                if (GamePadManager.ButtonPressedContinue(Buttons.DPadUp))
+                {
+                    Movement(gameTime, 0,-(_speed * delta));
+                    _currentFrameY = 2;
+                    _spriteEffect = SpriteEffects.None;
+                }
+                else if (GamePadManager.ButtonPressedContinue(Buttons.DPadDown))
+                {
+                    Movement(gameTime, 0,_speed * delta);
+                    _currentFrameY = 0;
+                    _spriteEffect = SpriteEffects.None;
+                }
+                else if (GamePadManager.ButtonPressedContinue(Buttons.DPadRight))
+                {
+                    Movement(gameTime, _speed * delta,0);
+                    _currentFrameY = 1;
+                    _spriteEffect = SpriteEffects.None;
+                }
+                else if (GamePadManager.ButtonPressedContinue(Buttons.DPadLeft))
+                {
+                    Movement(gameTime, -(_speed * delta),0);
+                    _currentFrameY = 1;
+                    _spriteEffect = SpriteEffects.FlipHorizontally;
+                }
+                else
+                {
+                    Movement(gameTime, 0,0);
+                    ResetAnimation("x");
+                }
             }
             else
             {
-                Movement(0,0);
-                ResetAnimation("x");
+                Movement(gameTime, 0,0);
+            }
+
+            if (_attack)
+            {
+                Attack(gameTime);
             }
             
-            if (GamePadManager.ButtonPressedOnce(Buttons.B) && _isSword)
+            if (GamePadManager.ButtonPressedContinue(Buttons.A) && _isSword && !_attack)
             {
-                Console.WriteLine("Attack");
+                _attack = true;
             }
             
             
