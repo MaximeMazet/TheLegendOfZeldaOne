@@ -14,7 +14,7 @@ namespace ZeldaOne.Entities.Friendlies
         private bool _isSword;
 
         public Link()
-            : base("player_movement", new Vector2(100, 100), 3, 2, new Vector2(16, 16))
+            : base("player_movement", new Vector2(100, 100), 3, 2, new Vector2(32, 32))
         {
             _isSword = true;
             _canWalk = true;

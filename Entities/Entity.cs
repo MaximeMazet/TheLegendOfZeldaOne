@@ -53,7 +53,7 @@ namespace ZeldaOne.Entities
             _color = Color.White;
             _rotation = 0.0f;
             _spriteEffect = SpriteEffects.None;
-            _scale = new Vector2(1.5f, 1.5f);
+            _scale = new Vector2(2f, 2f);
             _resourceName = resourceName;
             _position = startPosition;
             _cols = cols;
@@ -86,11 +86,6 @@ namespace ZeldaOne.Entities
 
         public virtual void Update(GameTime gameTime)
         {
-            if (_attack)
-            {
-                
-            }
-            
             _sourceRectangle.Y = _currentFrameY * _height;
             _sourceRectangle.X = _currentFrameX * _width;
             _position += _velocity;
