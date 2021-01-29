@@ -16,6 +16,7 @@ namespace ZeldaOne.Management
         {
             Textures.Add("player_movement", contentManager.Load<Texture2D>("graphics/player/player_movement"));
             Textures.Add("player_attack", contentManager.Load<Texture2D>("graphics/player/player_attack"));
+            Textures.Add("map_overworld", contentManager.Load<Texture2D>("graphics/maps/overworld"));
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using ZeldaOne.Entities.Friendlies;
@@ -10,11 +11,15 @@ namespace ZeldaOne
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
+        private RasterizerState _rasterizerState;
 
         private Link _link;
 
         private ResourceManager _resourceManager;
+        
+        private CameraManager _cameraManager;
 
+        
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -22,12 +27,16 @@ namespace ZeldaOne
             IsMouseVisible = false;
             _link = new Link();
             _resourceManager = new ResourceManager();
+            _cameraManager = new CameraManager();
+            _rasterizerState = new RasterizerState {MultiSampleAntiAlias = false};
         }
 
         protected override void Initialize()
         {
-            _graphics.PreferredBackBufferWidth = 512;
-            _graphics.PreferredBackBufferHeight = 478;
+            _graphics.PreferredBackBufferWidth = Settings.SCREEN_WIDTH * Settings.GENERAL_SCALE;
+            _graphics.PreferredBackBufferHeight = Settings.SCREEN_HEIGHT * Settings.GENERAL_SCALE;
+            _graphics.PreferMultiSampling = true;
+            _graphics.GraphicsDevice.PresentationParameters.MultiSampleCount = 8;
             _graphics.ApplyChanges();
 
             _link.Initialize();
@@ -43,6 +52,8 @@ namespace ZeldaOne
 
             _link.LoadContent(Content);
 
+            _cameraManager.LoadContent();
+
             // TODO: use this.Content to load your game content here
         }
 
@@ -56,6 +67,8 @@ namespace ZeldaOne
 
             _link.Update(gameTime);
             
+            _cameraManager.Update(gameTime);
+            
             GamePadManager.OldGamePadState = GamePadManager.GamePadState;
 
             base.Update(gameTime);
@@ -65,7 +78,14 @@ namespace ZeldaOne
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            _spriteBatch.Begin();
+            _spriteBatch.Begin(
+                SpriteSortMode.Immediate,
+                null,
+                SamplerState.PointClamp,
+                DepthStencilState.Default,
+                _rasterizerState
+                );
+            _cameraManager.Draw(_spriteBatch);
             _link.Draw(_spriteBatch);
             _spriteBatch.End();
             // TODO: Add your drawing code here
