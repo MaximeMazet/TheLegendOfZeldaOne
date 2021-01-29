@@ -14,7 +14,8 @@ namespace ZeldaOne.Management
         }
         public void LoadAllTextures(ContentManager contentManager)
         {
-            Textures.Add("graphics/player/player_movement", contentManager.Load<Texture2D>("graphics/player/player_movement"));
+            Textures.Add("player_movement", contentManager.Load<Texture2D>("graphics/player/player_movement"));
+            Textures.Add("player_attack", contentManager.Load<Texture2D>("graphics/player/player_attack"));
         }
     }
 }
