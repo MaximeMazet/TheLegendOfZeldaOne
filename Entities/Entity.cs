@@ -44,7 +44,6 @@ namespace ZeldaOne.Entities
         private Vector2 _velocity;
         private Texture2D _texture;
         private Rectangle _sourceRectangle;
-        private Rectangle _destinationRectangle;
 
         private ContentManager _contentManager;
 
@@ -77,9 +76,8 @@ namespace ZeldaOne.Entities
             _height = _texture.Height / _rows;
             _maxFrameX = (_texture.Width / _width) - 1;
             _maxFrameY = (_texture.Height / _height) - 1;
-            _origin.X = _width / 2;
-            _origin.Y = _height / 2;
-            _destinationRectangle = new Rectangle((int)_position.X, (int)_position.Y, _width, _height);
+            _origin.X = (float)_width / 2;
+            _origin.Y = (float)_height / 2;
             _sourceRectangle = new Rectangle(0, 0, _width, _height);
             _contentManager = contentManager;
         }
